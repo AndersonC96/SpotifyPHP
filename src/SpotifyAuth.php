@@ -3,7 +3,7 @@
         public static function getAuthUrl(){
             $clientId = CLIENT_ID;
             $redirectUri = REDIRECT_URI;
-            $scopes = 'user-read-private user-read-email';
+            $scopes = 'user-read-private user-read-email playlist-read-private user-read-recently-played';
             return "https://accounts.spotify.com/authorize?client_id=$clientId&response_type=code&redirect_uri=$redirectUri&scope=$scopes";
         }
         public static function getAccessToken($code){
