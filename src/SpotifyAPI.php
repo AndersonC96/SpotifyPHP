@@ -16,7 +16,12 @@
                 echo 'Error:' . curl_error($ch);
             }
             curl_close($ch);
-            return json_decode($result, true);
+            $response = json_decode($result, true);
+            if(isset($response['error'])){
+                echo 'API Error: ' . $response['error']['message'];
+                return null;
+            }
+            return $response;
         }
         public function getUserData(){
             return $this->callAPI("https://api.spotify.com/v1/me");
