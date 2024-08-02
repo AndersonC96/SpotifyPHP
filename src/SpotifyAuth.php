@@ -29,7 +29,12 @@
                 echo 'Error:' . curl_error($ch);
             }
             curl_close($ch);
-            return json_decode($result, true);
+            $response = json_decode($result, true);
+            if(isset($response['error'])){
+                echo 'API Error: ' . $response['error']['message'];
+                return null;
+            }
+            return $response;
         }
     }
 ?>
