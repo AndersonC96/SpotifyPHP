@@ -1,6 +1,7 @@
 <?php
     require '../vendor/autoload.php';
     require '../src/SpotifyAuth.php';
+    require '../src/SpotifyAPI.php';
     require '../src/config.php';
     session_start();
     if(!isset($_SESSION['access_token'])){
@@ -8,21 +9,10 @@
         exit();
     }
     $accessToken = $_SESSION['access_token'];
-    function getUserData($accessToken){
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://api.spotify.com/v1/me");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Authorization: Bearer $accessToken"
-        ]);
-        $result = curl_exec($ch);
-        if(curl_errno($ch)){
-            echo 'Error:' . curl_error($ch);
-        }
-        curl_close($ch);
-        return json_decode($result, true);
-    }
-    $userData = getUserData($accessToken);
+    $spotify = new SpotifyAPI($accessToken);
+    $userData = $spotify->getUserData();
+    $playlists = $spotify->getUserPlaylists();
+    $recentTracks = $spotify->getRecentlyPlayedTracks();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,6 +31,7 @@
                 justify-content: center;
                 align-items: center;
                 color: white;
+                overflow-y: scroll;
             }
             .dashboard-container{
                 background: rgba(0, 0, 0, 0.7);
@@ -48,7 +39,7 @@
                 border-radius: 10px;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
                 text-align: center;
-                max-width: 500px;
+                max-width: 800px;
                 width: 100%;
             }
             .profile-picture{
@@ -68,6 +59,30 @@
             .logout-button:hover{
                 background-color: #e04353;
             }
+            .playlist, .track{
+                background: rgba(255, 255, 255, 0.1);
+                padding: 10px;
+                border-radius: 5px;
+                margin: 10px 0;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .playlist img, .track img{
+                border-radius: 5px;
+            }
+            .play-button{
+                background-color: #1db954;
+                color: white;
+                padding: 5px 10px;
+                border-radius: 5px;
+                text-decoration: none;
+                font-weight: bold;
+                transition: background-color 0.3s;
+            }
+            .play-button:hover{
+                background-color: #1aa34a;
+            }
         </style>
     </head>
     <body>
@@ -79,6 +94,52 @@
             <p class="mb-2"><strong>E-mail:</strong> <?= htmlspecialchars($userData['email']) ?></p>
             <p class="mb-4"><strong>País:</strong> <?= htmlspecialchars($userData['country']) ?></p>
             <a href="logout.php" class="logout-button">Sair</a>
+            <div class="mt-6">
+                <h2 class="text-2xl font-bold mb-4">Suas Playlists</h2>
+                <?php foreach ($playlists['items'] as $playlist): ?>
+                <div class="playlist">
+                    <div class="flex items-center">
+                        <?php if (isset($playlist['images'][0]['url'])): ?>
+                        <img src="<?= $playlist['images'][0]['url'] ?>" alt="Playlist Image" width="50">
+                        <?php endif; ?>
+                        <p class="ml-4"><?= htmlspecialchars($playlist['name']) ?></p>
+                    </div>
+                    <a href="<?= $playlist['external_urls']['spotify'] ?>" target="_blank" class="play-button">Visualizar</a>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <div class="mt-6">
+                <h2 class="text-2xl font-bold mb-4">Faixas Tocadas Recentemente</h2>
+                <?php foreach ($recentTracks['items'] as $item): ?>
+                <div class="track">
+                    <div class="flex items-center">
+                        <?php if (isset($item['track']['album']['images'][0]['url'])): ?>
+                        <img src="<?= $item['track']['album']['images'][0]['url'] ?>" alt="Track Image" width="50">
+                        <?php endif; ?>
+                        <p class="ml-4"><?= htmlspecialchars($item['track']['name']) ?> by <?= htmlspecialchars($item['track']['artists'][0]['name']) ?></p>
+                    </div>
+                    <a href="#" class="play-button" onclick="playTrack('<?= $item['track']['uri'] ?>')">Play</a>
+                </div>
+                <?php endforeach; ?>
+            </div>
         </div>
+        <script>
+            function playTrack(trackUri){
+                fetch('play.php',{
+                    method: 'POST',
+                    headers:{
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ uri: trackUri })
+                }).then(response => response.json())
+                .then(data =>{
+                    if (data.success){
+                        alert('Faixa está tocando!');
+                    }else{
+                        alert('Falha ao reproduzir a faixa.');
+                    }
+                });
+            }
+        </script>
     </body>
 </html>
