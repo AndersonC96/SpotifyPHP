@@ -26,21 +26,25 @@
             body{
                 font-family: 'Montserrat', sans-serif;
                 background: linear-gradient(135deg, #1db954, #191414);
-                height: 100vh;
+                min-height: 100vh;
                 display: flex;
                 justify-content: center;
-                align-items: center;
+                align-items: flex-start;
+                padding: 20px;
                 color: white;
-                overflow-y: scroll;
             }
-            .dashboard-container{
-                background: rgba(0, 0, 0, 0.7);
+            .container{
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                max-width: 1200px;
+                width: 100%;
+            }
+            .card{
+                background: rgba(0, 0, 0, 0.7); /* Translucent black */
                 padding: 20px;
                 border-radius: 10px;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                text-align: center;
-                max-width: 800px;
-                width: 100%;
             }
             .profile-picture{
                 border-radius: 50%;
@@ -86,15 +90,17 @@
         </style>
     </head>
     <body>
-        <div class="dashboard-container">
-            <?php if (isset($userData['images']) && !empty($userData['images'])): ?>
-            <img src="<?= htmlspecialchars($userData['images'][0]['url']) ?>" alt="Profile Picture" class="profile-picture" width="100">
-            <?php endif; ?>
-            <h1 class="text-3xl font-bold mb-4">Bem-vindo, <?= isset($userData['display_name']) ? htmlspecialchars($userData['display_name']) : 'User' ?></h1>
-            <p class="mb-2"><strong>E-mail:</strong> <?= isset($userData['email']) ? htmlspecialchars($userData['email']) : 'Not provided' ?></p>
-            <p class="mb-4"><strong>País:</strong> <?= isset($userData['country']) ? htmlspecialchars($userData['country']) : 'Not provided' ?></p>
-            <a href="logout.php" class="logout-button">Sair</a>
-            <div class="mt-6">
+        <div class="container">
+            <div class="card">
+                <?php if (isset($userData['images']) && !empty($userData['images'])): ?>
+                <img src="<?= htmlspecialchars($userData['images'][0]['url']) ?>" alt="Profile Picture" class="profile-picture" width="100">
+                <?php endif; ?>
+                <h1 class="text-3xl font-bold mb-4">Bem-vindo, <?= isset($userData['display_name']) ? htmlspecialchars($userData['display_name']) : 'User' ?></h1>
+                <p class="mb-2"><strong>E-mail:</strong> <?= isset($userData['email']) ? htmlspecialchars($userData['email']) : 'Not provided' ?></p>
+                <p class="mb-4"><strong>País:</strong> <?= isset($userData['country']) ? htmlspecialchars($userData['country']) : 'Not provided' ?></p>
+                <a href="logout.php" class="logout-button">Sair</a>
+            </div>
+            <div class="card">
                 <h2 class="text-2xl font-bold mb-4">Suas Playlists</h2>
                 <?php if (isset($playlists['items']) && is_array($playlists['items'])): ?>
                 <?php foreach ($playlists['items'] as $playlist): ?>
@@ -105,15 +111,15 @@
                         <?php endif; ?>
                         <p class="ml-4"><?= htmlspecialchars($playlist['name']) ?></p>
                     </div>
-                    <a href="<?= htmlspecialchars($playlist['external_urls']['spotify']) ?>" target="_blank" class="play-button">View</a>
+                    <a href="<?= htmlspecialchars($playlist['external_urls']['spotify']) ?>" target="_blank" class="play-button">Visualizar</a>
                 </div>
                 <?php endforeach; ?>
                 <?php else: ?>
                 <p>Nenhuma playlist encontrada.</p>
                 <?php endif; ?>
             </div>
-            <div class="mt-6">
-                <h2 class="text-2xl font-bold mb-4">Faixas Tocadas Recentemente</h2>
+            <div class="card">
+                <h2 class="text-2xl font-bold mb-4">Nenhuma faixa tocada recentemente encontrada</h2>
                 <?php if (isset($recentTracks['items']) && is_array($recentTracks['items'])): ?>
                 <?php foreach ($recentTracks['items'] as $item): ?>
                 <div class="track">
