@@ -88,39 +88,47 @@
     <body>
         <div class="dashboard-container">
             <?php if (isset($userData['images']) && !empty($userData['images'])): ?>
-            <img src="<?= $userData['images'][0]['url'] ?>" alt="Profile Picture" class="profile-picture" width="100">
+            <img src="<?= htmlspecialchars($userData['images'][0]['url']) ?>" alt="Profile Picture" class="profile-picture" width="100">
             <?php endif; ?>
-            <h1 class="text-3xl font-bold mb-4">Bem-vindo, <?= htmlspecialchars($userData['display_name']) ?></h1>
-            <p class="mb-2"><strong>E-mail:</strong> <?= htmlspecialchars($userData['email']) ?></p>
-            <p class="mb-4"><strong>País:</strong> <?= htmlspecialchars($userData['country']) ?></p>
+            <h1 class="text-3xl font-bold mb-4">Bem-vindo, <?= isset($userData['display_name']) ? htmlspecialchars($userData['display_name']) : 'User' ?></h1>
+            <p class="mb-2"><strong>E-mail:</strong> <?= isset($userData['email']) ? htmlspecialchars($userData['email']) : 'Not provided' ?></p>
+            <p class="mb-4"><strong>País:</strong> <?= isset($userData['country']) ? htmlspecialchars($userData['country']) : 'Not provided' ?></p>
             <a href="logout.php" class="logout-button">Sair</a>
             <div class="mt-6">
                 <h2 class="text-2xl font-bold mb-4">Suas Playlists</h2>
+                <?php if (isset($playlists['items']) && is_array($playlists['items'])): ?>
                 <?php foreach ($playlists['items'] as $playlist): ?>
                 <div class="playlist">
                     <div class="flex items-center">
                         <?php if (isset($playlist['images'][0]['url'])): ?>
-                        <img src="<?= $playlist['images'][0]['url'] ?>" alt="Playlist Image" width="50">
+                        <img src="<?= htmlspecialchars($playlist['images'][0]['url']) ?>" alt="Playlist Image" width="50">
                         <?php endif; ?>
                         <p class="ml-4"><?= htmlspecialchars($playlist['name']) ?></p>
                     </div>
-                    <a href="<?= $playlist['external_urls']['spotify'] ?>" target="_blank" class="play-button">Visualizar</a>
+                    <a href="<?= htmlspecialchars($playlist['external_urls']['spotify']) ?>" target="_blank" class="play-button">View</a>
                 </div>
                 <?php endforeach; ?>
+                <?php else: ?>
+                <p>Nenhuma playlist encontrada.</p>
+                <?php endif; ?>
             </div>
             <div class="mt-6">
                 <h2 class="text-2xl font-bold mb-4">Faixas Tocadas Recentemente</h2>
+                <?php if (isset($recentTracks['items']) && is_array($recentTracks['items'])): ?>
                 <?php foreach ($recentTracks['items'] as $item): ?>
                 <div class="track">
                     <div class="flex items-center">
                         <?php if (isset($item['track']['album']['images'][0]['url'])): ?>
-                        <img src="<?= $item['track']['album']['images'][0]['url'] ?>" alt="Track Image" width="50">
+                        <img src="<?= htmlspecialchars($item['track']['album']['images'][0]['url']) ?>" alt="Track Image" width="50">
                         <?php endif; ?>
                         <p class="ml-4"><?= htmlspecialchars($item['track']['name']) ?> by <?= htmlspecialchars($item['track']['artists'][0]['name']) ?></p>
                     </div>
-                    <a href="#" class="play-button" onclick="playTrack('<?= $item['track']['uri'] ?>')">Play</a>
+                    <a href="#" class="play-button" onclick="playTrack('<?= htmlspecialchars($item['track']['uri']) ?>')">Play</a>
                 </div>
                 <?php endforeach; ?>
+                <?php else: ?>
+                <p>Nenhuma faixa tocada recentemente encontrada.</p>
+                <?php endif; ?>
             </div>
         </div>
         <script>
