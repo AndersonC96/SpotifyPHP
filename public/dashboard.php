@@ -13,20 +13,21 @@
     $userData = $spotify->getUserData();
     $currentPlaying = $spotify->getCurrentlyPlaying();
 ?>
-            <?php include 'navbar.php'; ?>
-            <div class="card">
+        <?php include 'navbar.php'; ?>
+        <div class="container mx-auto px-4 py-8">
+            <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
                 <?php if (isset($userData['images']) && !empty($userData['images'])): ?>
-                <img src="<?= htmlspecialchars($userData['images'][0]['url']) ?>" alt="Profile Picture" class="profile-picture" width="100">
+                <img src="<?= htmlspecialchars($userData['images'][0]['url']) ?>" alt="Profile Picture" class="profile-picture rounded-full w-24 h-24 mb-4">
                 <?php endif; ?>
-                <h1 class="text-3xl font-bold mb-4">Welcome, <?= isset($userData['display_name']) ? htmlspecialchars($userData['display_name']) : 'User' ?></h1>
-                <p class="mb-2"><strong>Email:</strong> <?= isset($userData['email']) ? htmlspecialchars($userData['email']) : 'Not provided' ?></p>
-                <p class="mb-4"><strong>Country:</strong> <?= isset($userData['country']) ? htmlspecialchars($userData['country']) : 'Not provided' ?></p>
+                <h1 class="text-4xl font-bold mb-2">Welcome, <?= isset($userData['display_name']) ? htmlspecialchars($userData['display_name']) : 'User' ?></h1>
+                <p class="text-xl mb-2"><strong>Email:</strong> <?= isset($userData['email']) ? htmlspecialchars($userData['email']) : 'Not provided' ?></p>
+                <p class="text-xl mb-2"><strong>Country:</strong> <?= isset($userData['country']) ? htmlspecialchars($userData['country']) : 'Not provided' ?></p>
             </div>
             <?php if ($currentPlaying && isset($currentPlaying['item'])): ?>
-            <div class="bg-white border-slate-100 dark:bg-slate-800 dark:border-slate-500 border-b rounded-t-xl p-4 pb-6 sm:p-10 sm:pb-8 lg:p-6 xl:p-10 xl:pb-8 space-y-6 sm:space-y-8 lg:space-y-6 xl:space-y-8">
+            <div class="bg-white rounded-lg shadow-lg p-6">
                 <div class="flex items-center space-x-4">
                     <?php if (isset($currentPlaying['item']['album']['images'][0]['url'])): ?>
-                    <img src="<?= htmlspecialchars($currentPlaying['item']['album']['images'][0]['url']) ?>" alt="Album Image" width="88" height="88" class="flex-none rounded-lg   bg-slate-100" loading="lazy" />
+                    <img src="<?= htmlspecialchars($currentPlaying['item']['album']['images'][0]['url']) ?>" alt="Album Image" width="88" height="88" class="flex-none rounded-lg bg-slate-100" loading="lazy" />
                     <?php endif; ?>
                     <div class="min-w-0 flex-auto space-y-1 font-semibold">
                         <p class="text-cyan-500 dark:text-cyan-400 text-sm leading-6">
@@ -110,7 +111,7 @@
                 const progressBar = document.getElementById('progress-bar');
                 const currentTime = document.getElementById('current-time');
                 const duration = document.getElementById('duration');
-                if(progressBar && currentTime && duration){
+                if (progressBar && currentTime && duration){
                     const updateProgress = () => {
                         const audio = document.getElementById('audio-player');
                         if(audio){
