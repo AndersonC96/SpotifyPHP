@@ -1,19 +1,19 @@
 <?php
-require '../vendor/autoload.php';
-require '../src/SpotifyAuth.php';
-require '../src/SpotifyAPI.php';
-require '../src/config.php';
-session_start();
-if (!isset($_SESSION['access_token'])) {
-    header('Location: index.php');
-    exit();
-}
-$accessToken = $_SESSION['access_token'];
-$spotify = new SpotifyAPI($accessToken);
-$userData = $spotify->getUserData();
-$currentPlaying = $spotify->getCurrentlyPlaying();
-$topTracks = $spotify->callAPI("https://api.spotify.com/v1/me/top/tracks?limit=10");
-$topArtists = $spotify->callAPI("https://api.spotify.com/v1/me/top/artists?limit=10");
+    require '../vendor/autoload.php';
+    require '../src/SpotifyAuth.php';
+    require '../src/SpotifyAPI.php';
+    require '../src/config.php';
+    session_start();
+    if(!isset($_SESSION['access_token'])){
+        header('Location: index.php');
+        exit();
+    }
+    $accessToken = $_SESSION['access_token'];
+    $spotify = new SpotifyAPI($accessToken);
+    $userData = $spotify->getUserData();
+    $currentPlaying = $spotify->getCurrentlyPlaying();
+    $topTracks = $spotify->getTopTracks();
+    $topArtists = $spotify->getTopArtists();
 ?>
         <?php include 'navbar.php'; ?>
         <div class="container mx-auto px-4 py-8">
@@ -111,7 +111,7 @@ $topArtists = $spotify->callAPI("https://api.spotify.com/v1/me/top/artists?limit
                     <?php foreach ($topTracks['items'] as $track) : ?>
                     <div class="track bg-gray-900 p-4 rounded-lg shadow-md flex flex-col items-center">
                         <?php if (isset($track['album']['images'][0]['url'])) : ?>
-                            <img src="<?= htmlspecialchars($track['album']['images'][0]['url']) ?>" alt="Track Image" class="w-full h-48 object-cover rounded-lg">
+                        <img src="<?= htmlspecialchars($track['album']['images'][0]['url']) ?>" alt="Track Image" class="w-full h-48 object-cover rounded-lg">
                         <?php endif; ?>
                         <div class="mt-4 text-center">
                             <p class="text-lg font-bold"><?= htmlspecialchars($track['name']) ?></p>
@@ -181,11 +181,11 @@ $topArtists = $spotify->callAPI("https://api.spotify.com/v1/me/top/artists?limit
                         currentTime.textContent = formatTime(current);
                     });
                     playPauseButton.addEventListener('click', () => {
-                        if(audioPlayer.paused){
+                        if (audioPlayer.paused) {
                             audioPlayer.play();
                             playIcon.classList.add('hidden');
                             pauseIcon.classList.remove('hidden');
-                        }else{
+                        } else {
                             audioPlayer.pause();
                             playIcon.classList.remove('hidden');
                             pauseIcon.classList.add('hidden');
@@ -198,13 +198,13 @@ $topArtists = $spotify->callAPI("https://api.spotify.com/v1/me/top/artists?limit
                         audioPlayer.currentTime = Math.min(audioPlayer.currentTime + 10, audioPlayer.duration);
                     });
                     speedButton.addEventListener('click', () => {
-                        if (audioPlayer.playbackRate === 1) {
+                        if(audioPlayer.playbackRate === 1){
                             audioPlayer.playbackRate = 1.5;
                             speedButton.textContent = '1.5x';
-                        } else if (audioPlayer.playbackRate === 1.5) {
+                        }else if(audioPlayer.playbackRate === 1.5) {
                             audioPlayer.playbackRate = 2;
                             speedButton.textContent = '2x';
-                        } else {
+                        }else{
                             audioPlayer.playbackRate = 1;
                             speedButton.textContent = '1x';
                         }
@@ -212,7 +212,7 @@ $topArtists = $spotify->callAPI("https://api.spotify.com/v1/me/top/artists?limit
                     playButtons.forEach(button => {
                         button.addEventListener('click', (e) => {
                             const previewUrl = e.currentTarget.getAttribute('data-preview-url');
-                            if (previewUrl) {
+                            if(previewUrl){
                                 audioPlayer.src = previewUrl;
                                 audioPlayer.play();
                                 playIcon.classList.add('hidden');
