@@ -35,6 +35,9 @@
         public function getFollowedArtists(){
             return $this->callAPI("https://api.spotify.com/v1/me/following?type=artist");
         }
+        public function getUserPodcasts(){
+            return $this->callAPI('https://api.spotify.com/v1/me/shows?limit=20');
+        }
         public function playTrack($trackUri){
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, "https://api.spotify.com/v1/me/player/play");
