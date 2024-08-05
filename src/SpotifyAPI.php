@@ -97,4 +97,7 @@
         public function addItemToQueue($uri){
             return $this->callAPI('https://api.spotify.com/v1/me/player/queue?uri=' . $uri, 'POST');
         }
+        public function getCurrentlyPlayingTrack(){
+            return $this->callAPI("https://api.spotify.com/v1/me/player/currently-playing");
+        }
     }
