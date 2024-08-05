@@ -55,13 +55,18 @@ SpotifyPHP é uma aplicação web desenvolvida em PHP que utiliza a API do Spoti
 SpotifyPHP/
 ├── public/
 │   ├── callback.php
+│   ├── control.php
 │   ├── index.php
 │   ├── dashboard.php
 │   ├── playlists.php
 │   ├── followed_artists.php
+│   ├── logout.php
 │   ├── podcasts.php
+│   ├── playlists.php
+│   ├── recently_played.php
 │   ├── navbar.php
 │   ├── player.php
+│   ├── search.php
 ├── src/
 │   ├── SpotifyAuth.php
 │   ├── SpotifyAPI.php
