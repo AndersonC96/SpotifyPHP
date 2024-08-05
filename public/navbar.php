@@ -21,7 +21,8 @@
                 background: #2d3748;
                 padding: 10px;
                 display: flex;
-                justify-content: center;
+                justify-content: space-between;
+                align-items: center;
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -39,8 +40,18 @@
             .navbar a:hover{
                 background-color: #4a5568;
             }
+            .search-bar{
+                display: flex;
+                align-items: center;
+            }
+            .search-input{
+                padding: 5px 10px;
+                border-radius: 5px;
+                border: none;
+                margin-right: 10px;
+            }
             .container{
-                margin-top: 60px;
+                margin-top: 80px;
                 width: 100%;
                 max-width: 1200px;
             }
@@ -55,11 +66,17 @@
     </head>
     <body>
         <div class="navbar">
-            <a href="dashboard.php">Home</a>
-            <a href="playlists.php">Playlists</a>
-            <a href="recently_played.php">Recently Played</a>
-            <a href="followed_artists.php">Followed Artists</a>
-            <a href="podcasts.php">Podcasts</a>
+            <div class="links">
+                <a href="dashboard.php">Home</a>
+                <a href="playlists.php">Playlists</a>
+                <a href="recently_played.php">Recently Played</a>
+                <a href="followed_artists.php">Followed Artists</a>
+                <a href="podcasts.php">Podcasts</a>
+            </div>
+            <form class="search-bar" method="GET" action="search.php">
+                <input type="text" name="query" class="search-input" placeholder="Search for music...">
+                <button type="submit" class="navbar-button">Search</button>
+            </form>
             <a href="logout.php">Logout</a>
         </div>
         <div class="container">
