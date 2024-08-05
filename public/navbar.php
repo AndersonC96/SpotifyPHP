@@ -28,17 +28,20 @@
                 left: 0;
                 z-index: 10;
             }
-            .navbar a{
+            .navbar a, .navbar button{
                 margin: 0 10px;
                 padding: 10px 20px;
                 border-radius: 5px;
                 text-decoration: none;
                 font-weight: bold;
                 color: white;
+                background-color: #4a5568;
+                border: none;
+                cursor: pointer;
                 transition: background-color 0.3s;
             }
-            .navbar a:hover{
-                background-color: #4a5568;
+            .navbar a:hover, .navbar button:hover{
+                background-color: #5b6a79;
             }
             .search-bar{
                 display: flex;
@@ -77,6 +80,7 @@
                 <input type="text" name="query" class="search-input" placeholder="Search for music...">
                 <button type="submit" class="navbar-button">Search</button>
             </form>
+            <a href="logout.php">Clear Session</a>
             <a href="logout.php">Logout</a>
         </div>
         <div class="container">
