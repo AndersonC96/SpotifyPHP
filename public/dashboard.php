@@ -1,29 +1,29 @@
 <?php
-    require '../vendor/autoload.php';
-    require '../src/SpotifyAuth.php';
-    require '../src/SpotifyAPI.php';
-    require '../src/config.php';
-    session_start();
-    if(!isset($_SESSION['access_token'])){
-        header('Location: index.php');
-        exit();
-    }
-    $accessToken = $_SESSION['access_token'];
-    $spotify = new SpotifyAPI($accessToken);
-    $userData = $spotify->getUserData();
-    $currentPlaying = $spotify->getCurrentlyPlaying();
-    $topTracks = $spotify->callAPI("https://api.spotify.com/v1/me/top/tracks?limit=10");
-    $topArtists = $spotify->callAPI("https://api.spotify.com/v1/me/top/artists?limit=10");
+require '../vendor/autoload.php';
+require '../src/SpotifyAuth.php';
+require '../src/SpotifyAPI.php';
+require '../src/config.php';
+session_start();
+if (!isset($_SESSION['access_token'])) {
+    header('Location: index.php');
+    exit();
+}
+$accessToken = $_SESSION['access_token'];
+$spotify = new SpotifyAPI($accessToken);
+$userData = $spotify->getUserData();
+$currentPlaying = $spotify->getCurrentlyPlaying();
+$topTracks = $spotify->callAPI("https://api.spotify.com/v1/me/top/tracks?limit=10");
+$topArtists = $spotify->callAPI("https://api.spotify.com/v1/me/top/artists?limit=10");
 ?>
         <?php include 'navbar.php'; ?>
         <div class="container mx-auto px-4 py-8">
             <div class="card mb-6 p-4 bg-gray-800 rounded-lg shadow-md">
                 <h1 class="text-4xl font-bold mb-2">Bem-vindo, <?= isset($userData['display_name']) ? htmlspecialchars($userData['display_name']) : 'Usuário' ?></h1>
             </div>
-            <?php if ($currentPlaying && isset($currentPlaying['item'])): ?>
+            <?php if ($currentPlaying && isset($currentPlaying['item'])) : ?>
             <div class="card mb-6 p-4 bg-gray-800 rounded-lg shadow-md">
                 <div class="flex items-center space-x-4">
-                    <?php if (isset($currentPlaying['item']['album']['images'][0]['url'])): ?>
+                    <?php if (isset($currentPlaying['item']['album']['images'][0]['url'])) : ?>
                     <img src="<?= htmlspecialchars($currentPlaying['item']['album']['images'][0]['url']) ?>" alt="Album Image" class="w-24 h-24 rounded-lg">
                     <?php endif; ?>
                     <div>
@@ -32,7 +32,7 @@
                         <p class="text-xl"><?= htmlspecialchars($currentPlaying['item']['artists'][0]['name']) ?></p>
                     </div>
                 </div>
-                <?php if (isset($currentPlaying['item']['preview_url'])): ?>
+                <?php if (isset($currentPlaying['item']['preview_url'])) : ?>
                 <div class="mt-4">
                     <audio id="audio-player" src="<?= htmlspecialchars($currentPlaying['item']['preview_url']) ?>" class="w-full"></audio>
                     <div class="relative mt-4">
@@ -93,18 +93,72 @@
                         <button type="button" class="rounded-lg text-xs leading-6 font-semibold px-2 ring-2 ring-inset ring-gray-500 text-gray-500 dark:text-gray-100 dark:ring-0 dark:bg-gray-500" id="speed-button">1x</button>
                     </div>
                 </div>
-                <?php else: ?>
+                <?php else : ?>
                 <p class="text-red-500">No preview available for this track.</p>
                 <?php endif; ?>
             </div>
-            <?php else: ?>
+            <?php else : ?>
             <div class="card mb-6 p-4 bg-gray-800 rounded-lg shadow-md">
                 <p class="text-red-500">No track is currently playing.</p>
             </div>
             <?php endif; ?>
         </div>
+        <div class="container mx-auto px-4 py-8">
+            <div class="card mb-6 p-4 bg-gray-800 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-4">Your Top Tracks</h2>
+                <?php if (isset($topTracks['items']) && is_array($topTracks['items'])) : ?>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <?php foreach ($topTracks['items'] as $track) : ?>
+                    <div class="track bg-gray-900 p-4 rounded-lg shadow-md flex flex-col items-center">
+                        <?php if (isset($track['album']['images'][0]['url'])) : ?>
+                            <img src="<?= htmlspecialchars($track['album']['images'][0]['url']) ?>" alt="Track Image" class="w-full h-48 object-cover rounded-lg">
+                        <?php endif; ?>
+                        <div class="mt-4 text-center">
+                            <p class="text-lg font-bold"><?= htmlspecialchars($track['name']) ?></p>
+                            <p class="text-gray-400"><?= htmlspecialchars($track['artists'][0]['name']) ?></p>
+                        </div>
+                        <button class="mt-4 bg-cyan-500 text-white p-2 rounded-full play-button" data-preview-url="<?= htmlspecialchars($track['preview_url']) ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-6.44 3.694A1 1 0 017 14.06V9.94a1 1 0 011.312-.946l6.44 3.694a1 1 0 010 1.686z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php else : ?>
+                <p>No recently played tracks found.</p>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 py-8">
+            <div class="card mb-6 p-4 bg-gray-800 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-4">Your Top Artists</h2>
+                <?php if (isset($topArtists['items']) && is_array($topArtists['items'])) : ?>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <?php foreach ($topArtists['items'] as $artist) : ?>
+                    <div class="artist bg-gray-900 p-4 rounded-lg shadow-md flex flex-col items-center">
+                        <?php if (isset($artist['images'][0]['url'])) : ?>
+                        <img src="<?= htmlspecialchars($artist['images'][0]['url']) ?>" alt="Artist Image" class="w-full h-48 object-cover rounded-lg">
+                        <?php endif; ?>
+                        <div class="mt-4 text-center">
+                            <p class="text-lg font-bold"><?= htmlspecialchars($artist['name']) ?></p>
+                        </div>
+                        <a href="<?= htmlspecialchars($artist['external_urls']['spotify']) ?>" target="_blank" class="mt-4 bg-cyan-500 text-white p-2 rounded-full flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.5 4.5M9 4.5h10.5M15 14.5l4.5 4.5M6 18h2.25m0 0A2.25 2.25 0 0110.5 20.25H6m2.25 0A2.25 2.25 0 016 18.75v-1.5m0-3.75h10.5M6 10.5V6m0 0A2.25 2.25 0 014.75 4.5H6M6 6v4.5" />
+                            </svg>
+                            View
+                        </a>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php else : ?>
+                <p>No followed artists found.</p>
+                <?php endif; ?>
+            </div>
+        </div>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function(){
                 const audioPlayer = document.getElementById('audio-player');
                 const progressBar = document.getElementById('progress-bar');
                 const currentTime = document.getElementById('current-time');
@@ -115,8 +169,9 @@
                 const rewindButton = document.getElementById('rewind-button');
                 const skipButton = document.getElementById('skip-button');
                 const speedButton = document.getElementById('speed-button');
+                const playButtons = document.querySelectorAll('.play-button');
                 if(audioPlayer && progressBar && currentTime && duration){
-                        audioPlayer.addEventListener('loadedmetadata', () => {
+                    audioPlayer.addEventListener('loadedmetadata', () => {
                         duration.textContent = formatTime(audioPlayer.duration);
                     });
                     audioPlayer.addEventListener('timeupdate', () => {
@@ -143,16 +198,29 @@
                         audioPlayer.currentTime = Math.min(audioPlayer.currentTime + 10, audioPlayer.duration);
                     });
                     speedButton.addEventListener('click', () => {
-                        if(audioPlayer.playbackRate === 1){
+                        if (audioPlayer.playbackRate === 1) {
                             audioPlayer.playbackRate = 1.5;
                             speedButton.textContent = '1.5x';
-                        }else if(audioPlayer.playbackRate === 1.5){
+                        } else if (audioPlayer.playbackRate === 1.5) {
                             audioPlayer.playbackRate = 2;
                             speedButton.textContent = '2x';
-                        }else{
+                        } else {
                             audioPlayer.playbackRate = 1;
                             speedButton.textContent = '1x';
                         }
+                    });
+                    playButtons.forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            const previewUrl = e.currentTarget.getAttribute('data-preview-url');
+                            if (previewUrl) {
+                                audioPlayer.src = previewUrl;
+                                audioPlayer.play();
+                                playIcon.classList.add('hidden');
+                                pauseIcon.classList.remove('hidden');
+                            } else {
+                                console.log('No preview URL available for this track');
+                            }
+                        });
                     });
                     const formatTime = (seconds) => {
                         const mins = Math.floor(seconds / 60);
