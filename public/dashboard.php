@@ -12,6 +12,8 @@
     $spotify = new SpotifyAPI($accessToken);
     $userData = $spotify->getUserData();
     $currentPlaying = $spotify->getCurrentlyPlaying();
+    $topTracks = $spotify->callAPI("https://api.spotify.com/v1/me/top/tracks?limit=10");
+    $topArtists = $spotify->callAPI("https://api.spotify.com/v1/me/top/artists?limit=10");
 ?>
         <?php include 'navbar.php'; ?>
         <div class="container mx-auto px-4 py-8">
