@@ -72,6 +72,6 @@ SpotifyPHP/
 ```
 
 ## Uso
-    1. Acesse a página inicial e clique no botão de login para autorizar a aplicação a acessar sua conta do Spotify.
-    2. Navegue pelas diferentes páginas usando a navbar para visualizar suas playlists, músicas recentemente tocadas, artistas seguidos e episódios de podcasts recentes.
-    3. Use o player de música integrado para reproduzir prévias das músicas.
+1. Acesse a página inicial e clique no botão de login para autorizar a aplicação a acessar sua conta do Spotify.
+2. Navegue pelas diferentes páginas usando a navbar para visualizar suas playlists, músicas recentemente tocadas, artistas seguidos e episódios de podcasts recentes.
+3. Use o player de música integrado para reproduzir prévias das músicas.
