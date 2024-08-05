@@ -55,7 +55,7 @@
     </head>
     <body>
         <div class="navbar">
-            <a href="index.php">Home</a>
+            <a href="dashboard.php">Home</a>
             <a href="playlists.php">Playlists</a>
             <a href="recently_played.php">Recently Played</a>
             <a href="followed_artists.php">Followed Artists</a>
