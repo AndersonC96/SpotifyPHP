@@ -33,6 +33,7 @@
                         <div class="ml-4">
                             <p class="font-bold"><?= htmlspecialchars($episode['name'] ?? 'No name') ?></p>
                             <p class="text-sm"><?= htmlspecialchars($episode['description'] ?? 'No description') ?></p>
+                            <p class="text-sm text-gray-400"><?= htmlspecialchars(date('d/m/Y', strtotime($episode['release_date'] ?? ''))) ?></p>
                         </div>
                     </div>
                     <a href="<?= htmlspecialchars($episode['external_urls']['spotify'] ?? '#') ?>" target="_blank" class="view-button">Listen</a>
