@@ -59,6 +59,7 @@
             <a href="playlists.php">Playlists</a>
             <a href="recently_played.php">Recently Played</a>
             <a href="followed_artists.php">Followed Artists</a>
+            <a href="podcasts.php">Podcasts</a>
             <a href="logout.php">Logout</a>
         </div>
         <div class="container">
