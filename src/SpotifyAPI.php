@@ -33,6 +33,12 @@
         public function getUserPodcasts(){
             return $this->callAPI('https://api.spotify.com/v1/me/shows?limit=20');
         }
+        public function search($query){
+            return $this->callAPI('https://api.spotify.com/v1/search?q=' . urlencode($query) . '&type=track,album,artist&limit=10');
+        }
+        public function getCurrentlyPlaying(){
+            return $this->callAPI('https://api.spotify.com/v1/me/player/currently-playing');
+        }
         public function playTrack($trackUri){
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, 'https://api.spotify.com/v1/me/player/play');
