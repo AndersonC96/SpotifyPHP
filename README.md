@@ -74,6 +74,7 @@ SpotifyPHP/
 ├── vendor/
 ├── composer.json
 └── README.md
+```
 
 ## 🚀 Uso
 
