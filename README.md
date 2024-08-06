@@ -1,24 +1,24 @@
-# SpotifyPHP
+# 🎵 SpotifyPHP
 
 SpotifyPHP é uma aplicação web desenvolvida em PHP que utiliza a API do Spotify para fornecer funcionalidades como exibição de músicas recentemente tocadas, playlists do usuário, artistas seguidos, episódios de podcasts recentes e muito mais.
 
-## Funcionalidades
+## 🌟 Funcionalidades
 
-- **Login usando a conta do Spotify**
-- **Exibir músicas recentemente tocadas**
-- **Exibir playlists do usuário**
-- **Exibir artistas seguidos pelo usuário**
-- **Exibir episódios de podcasts recentes**
-- **Player de música integrado com controles de reprodução**
+- **🔐 Login usando a conta do Spotify**
+- **🎧 Exibir músicas recentemente tocadas**
+- **📂 Exibir playlists do usuário**
+- **🎤 Exibir artistas seguidos pelo usuário**
+- **🎙️ Exibir episódios de podcasts recentes**
+- **🎵 Player de música integrado com controles de reprodução**
 
-## Requisitos
+## 📋 Requisitos
 
 - PHP >= 7.4
 - Composer
 - Conta no Spotify Developer e credenciais da API
 - XAMPP (ou qualquer outro servidor local)
 
-## Instalação
+## ⚙️ Instalação
 
 1. Clone o repositório para o seu ambiente local:
     ```sh
@@ -49,7 +49,7 @@ SpotifyPHP é uma aplicação web desenvolvida em PHP que utiliza a API do Spoti
 
 6. Acesse a aplicação em [http://localhost:8000](http://localhost:8000).
 
-## Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 ```plaintext
 SpotifyPHP/
@@ -74,9 +74,9 @@ SpotifyPHP/
 ├── vendor/
 ├── composer.json
 └── README.md
-```
 
-## Uso
+## 🚀 Uso
+
 1. Acesse a página inicial e clique no botão de login para autorizar a aplicação a acessar sua conta do Spotify.
 2. Navegue pelas diferentes páginas usando a navbar para visualizar suas playlists, músicas recentemente tocadas, artistas seguidos e episódios de podcasts recentes.
 3. Use o player de música integrado para reproduzir prévias das músicas.
